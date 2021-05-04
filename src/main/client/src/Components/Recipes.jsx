@@ -17,27 +17,25 @@ function Recipes() {
 
   const addIngredientToList = (e, name) => {
     console.log(name);
-    let i = {name};
-    i.dummyUserEmail = curUser.email;
+    let ingredient = {name};
+    // i.dummyUserEmail = curUser.email;
     
-    axios.post('http://localhost:8080/api/ingredients/addtoshoppinglist', i)
+    axios.post(`http://localhost:8080/api/users/${curUser.email}/addtoshoppinglist`, ingredient)
     .then(response => {
-      console.log(response.data);
+      // console.log(response.data);
       if(response.data){
-        console.log("got through that particular 'if' statement");
-        let adjList = [...curUser.shoppingList];
-        adjList.push(i);
-        setUser({...curUser, shoppingList:adjList});
-        console.log(adjList);
+        let shoppingList = [...curUser.shoppingList];
+        ingredient.crossedOff = false;
+        shoppingList.push(ingredient);
+        setUser({ ...curUser, shoppingList });
       }
     }).catch( err => console.log(err));
   }
 
   const removeIngredientFromList = (e, name) => {
     console.log(name);
-    let i = {name};
-    i.dummyUserEmail = curUser.email;
-    axios.post('http://localhost:8080/api/ingredients/removefromshoppinglist', i)
+    let ingredient = {name};
+    axios.post(`http://localhost:8080/api/users/${curUser.email}/removefromshoppinglist`, ingredient)
       .then( response => {
         console.log(response.data);
         let adjList = [...curUser.shoppingList];
@@ -109,11 +107,11 @@ function Recipes() {
                                 <div className="col s10 left-align">{ing.name}</div>
                                 <div className="col s2">
                                   {!curUser.shoppingList.map(x => (x.name? x.name : x)).includes(ing.name) ? 
-                                    <button className="btn waves-effect waves-light blue accent-2" onClick={e => addIngredientToList(e, ing.name)}>
+                                    <button className="btn waves-effect waves-light blue accent-2" onClick={e => addIngredientToList(e, (ing.name? ing.name : ing))}>
                                       <i className="material-icons">add_circle_outline</i>
                                     </button>
                                     :
-                                    <button className="btn waves-effect waves-dark red darken-3" onClick={e => removeIngredientFromList(e, ing.name)}>
+                                    <button className="btn waves-effect waves-dark red darken-3" onClick={e => removeIngredientFromList(e, (ing.name? ing.name : ing))}>
                                       <i className="material-icons">remove_circle_outline</i>
                                     </button>
                                   }

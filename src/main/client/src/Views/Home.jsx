@@ -24,49 +24,49 @@ const Home = props =>{
             navigate("/");
         } 
 
-        if(!curUser.pantry){
-            setPantry([]);
-            return;
-        }
+        // if(!curUser.pantry){
+        //     setPantry([]);
+        //     return;
+        // }
 
         // because of the way the relational database creates JSON objects, sometimes instead of getting an actual recipe we just get a recipe ID.  Which is not ideal for, you know, showing your recipe on the page
-        let ingredients = curUser.pantry;
-        for(let i=0; i<ingredients.length; i++){
-            if(typeof ingredients[i] === "number"){
-                console.log("HERE IS OUR AXIOS CALL FOR NUMBER", ingredients[i]);
-                axios.get(`http://localhost:8080/api/ingredients/${ingredients[i]}`)
-                    .then(res => {
-                        ingredients.splice(i, 1, res.data);
-                        setUser({...curUser,
-                            pantry: ingredients
-                        });
-                        setPantry(ingredients);
+        // let ingredients = curUser.pantry;
+        // for(let i=0; i<ingredients.length; i++){
+        //     if(typeof ingredients[i] === "number"){
+        //         console.log("HERE IS OUR AXIOS CALL FOR NUMBER", ingredients[i]);
+        //         axios.get(`http://localhost:8080/api/ingredients/${ingredients[i]}`)
+        //             .then(res => {
+        //                 ingredients.splice(i, 1, res.data);
+        //                 setUser({...curUser,
+        //                     pantry: ingredients
+        //                 });
+        //                 setPantry(ingredients);
 
-                    }).catch(err => console.log(err));
-            }
-        }
-        setPantry(curUser?.pantry);
+        //             }).catch(err => console.log(err));
+        //     }
+        // }
+        // setPantry(curUser?.pantry);
     },[]);
     
     //==================================================================================
     //  Handling the ingredients on hand
     //==================================================================================
-    const handleFormChange = e => {
-        setIngredient({ name: e.target.value});
-    }
+    // const handleFormChange = e => {
+    //     setIngredient({ name: e.target.value});
+    // }
     
-    const handleFormSubmit = (e) => {
-        e.preventDefault();
-        ingredient.dummyUserEmail = curUser.email;
+    // const handleFormSubmit = (e) => {
+    //     e.preventDefault();
+    //     ingredient.dummyUserEmail = curUser.email;
         
-        axios.post('http://localhost:8080/api/ingredients/addtopantry', ingredient)
-        .then(response => {
-            if(response.data){
-                setPantry([...pantry, ingredient]);
-            }
-            setIngredient({name: ""});
-        }).catch( err => console.log(err));
-    }
+    //     axios.post('http://localhost:8080/api/ingredients/addtopantry', ingredient)
+    //     .then(response => {
+    //         if(response.data){
+    //             setPantry([...pantry, ingredient]);
+    //         }
+    //         setIngredient({name: ""});
+    //     }).catch( err => console.log(err));
+    // }
     
     const removeFromPantry = (e, ingredient) => {
         ingredient.dummyUserEmail = curUser.email;
@@ -104,11 +104,12 @@ const Home = props =>{
                 <div className="col m6 s12 row">
                     <OnHand
                         pantry={pantry}
-                        handleChange={handleFormChange}
-                        handleSubmit={handleFormSubmit}
+                        // handleChange={handleFormChange}
+                        // handleSubmit={handleFormSubmit}
                         ingredient={ingredient}
                         removeFromPantry={removeFromPantry}
                     />
+                    <ShoppingList editable={false} />
                 </div>
             </div>
             <div className="row">

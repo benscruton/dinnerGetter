@@ -1,4 +1,4 @@
-package com.low910.dinnergetter.models;
+package com.benscruton.dinnergetter.models;
 
 import java.util.Date;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.low910.dinnergetter.controllers;
+package com.benscruton.dinnergetter.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

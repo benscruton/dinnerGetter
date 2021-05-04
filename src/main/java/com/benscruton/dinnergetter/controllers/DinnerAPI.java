@@ -1,11 +1,11 @@
-package com.low910.dinnergetter.controllers;
+package com.benscruton.dinnergetter.controllers;
 
 import java.util.List;
 
-import com.low910.dinnergetter.models.Ingredient;
-import com.low910.dinnergetter.models.Recipe;
-import com.low910.dinnergetter.models.User;
-import com.low910.dinnergetter.services.AppService;
+import com.benscruton.dinnergetter.models.Ingredient;
+import com.benscruton.dinnergetter.models.Recipe;
+import com.benscruton.dinnergetter.models.User;
+import com.benscruton.dinnergetter.services.AppService;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -186,40 +186,40 @@ public class DinnerAPI {
     //======================================================================
     // adds an ingredient to a users pantry
     //======================================================================
-    @PostMapping("ingredients/addtopantry")
-    public boolean addIngredientToPantry(@RequestBody Ingredient ingredient){
+    @PostMapping("users/{uEmail}/addtopantry")
+    public boolean addIngredientToPantry(@PathVariable("uEmail") String uEmail, @RequestBody Ingredient ingredient){
         Ingredient i = this.serv.createIngredient(ingredient);
-        User u = this.serv.findUserByEmail(ingredient.getDummyUserEmail());
+        User u = this.serv.findUserByEmail(uEmail);
         return this.serv.addIngredientToPantry(u, i);
     }
     
     //======================================================================
     // removes an ingredient from a users pantry
     //======================================================================
-    @PostMapping("ingredients/removefrompantry")
-    public void removeIngredientFromPantry(@RequestBody Ingredient ingredient){
+    @PostMapping("users/{uEmail}/removefrompantry")
+    public void removeIngredientFromPantry(@PathVariable("uEmail") String uEmail, @RequestBody Ingredient ingredient){
         Ingredient i = this.serv.findIngredientByName(ingredient.getName());
-        User u = this.serv.findUserByEmail(ingredient.getDummyUserEmail());
+        User u = this.serv.findUserByEmail(uEmail);
         this.serv.removeIngredientFromPantry(u, i);
     }
     
     //======================================================================
     // adds ingredient to a users shopping list
     //======================================================================
-    @PostMapping("ingredients/addtoshoppinglist")
-    public boolean addIngredientToShoppingList(@RequestBody Ingredient ingredient){
+    @PostMapping("users/{uEmail}/addtoshoppinglist")
+    public boolean addIngredientToShoppingList(@PathVariable("uEmail") String uEmail, @RequestBody Ingredient ingredient){
         Ingredient i = this.serv.createIngredient(ingredient);
-        User u = this.serv.findUserByEmail(ingredient.getDummyUserEmail());
+        User u = this.serv.findUserByEmail(uEmail);
         return this.serv.addIngredientToShoppingList(u, i);
     }
     
     //======================================================================
     // removes ingredient from shopping list
     //======================================================================
-    @PostMapping("ingredients/removefromshoppinglist")
-    public int removeIngredientFromShoppingList(@RequestBody Ingredient ingredient){
+    @PostMapping("users/{uEmail}/removefromshoppinglist")
+    public int removeIngredientFromShoppingList(@PathVariable("uEmail") String uEmail, @RequestBody Ingredient ingredient){
         Ingredient i = this.serv.findIngredientByName(ingredient.getName());
-        User u = this.serv.findUserByEmail(ingredient.getDummyUserEmail());
+        User u = this.serv.findUserByEmail(uEmail);
         return this.serv.removeIngredientFromShoppingList(u, i);
     }
 

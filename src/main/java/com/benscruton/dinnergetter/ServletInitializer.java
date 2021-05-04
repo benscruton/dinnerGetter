@@ -1,4 +1,4 @@
-package com.low910.dinnergetter;
+package com.benscruton.dinnergetter;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;

@@ -1,8 +1,8 @@
-package com.low910.dinnergetter.repositories;
+package com.benscruton.dinnergetter.repositories;
 
 import java.util.List;
 
-import com.low910.dinnergetter.models.Recipe;
+import com.benscruton.dinnergetter.models.Recipe;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

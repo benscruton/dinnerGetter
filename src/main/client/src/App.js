@@ -33,10 +33,10 @@ function App() {
   });
 
   const [ recipes, setRecipes ] = useState([]);
-  const [ pantry, setPantry] = useState(false);
-  const [ shoppingList, setShoppingList] = useState(false);
+  // const [ pantry, setPantry] = useState(false);
+  // const [ shoppingList, setShoppingList] = useState(false);
   const [ addedRecipes, setAddedRecipes] = useState(false);
-  const [ ingredient, setIngredient] = useState({name: ""});
+  // const [ ingredient, setIngredient] = useState({name: ""});
   const [ allRecipes, setAllRecipes ] = useState([]);
   const [ hasBeenPopulated, setHasBeenPopulated ] = useState(false);
   const [ userIngredientList, setUserIngredientList] = useState("");
@@ -45,7 +45,9 @@ function App() {
 
   return (
     <div className="grey lighten-3">
-      <MyContext.Provider value = {{ recipe, setRecipe, curUser, setUser, pantry, setPantry, shoppingList, setShoppingList, addedRecipes, setAddedRecipes, recipes, setRecipes, ingredient, setIngredient,allRecipes, setAllRecipes,hasBeenPopulated, setHasBeenPopulated,userIngredientList, setUserIngredientList, redirectLocation, setRedirectLocation, searchResults, setSearchResults }}>
+      <MyContext.Provider value = {{ recipe, setRecipe, curUser, setUser,
+        // pantry, setPantry, shoppingList, setShoppingList, ingredient, setIngredient,
+        allRecipes, setAllRecipes, addedRecipes, setAddedRecipes, recipes, setRecipes, hasBeenPopulated, setHasBeenPopulated,userIngredientList, setUserIngredientList, redirectLocation, setRedirectLocation, searchResults, setSearchResults }}>
         <Nav />
         <MobileNav />
         {isAuthenticated? 

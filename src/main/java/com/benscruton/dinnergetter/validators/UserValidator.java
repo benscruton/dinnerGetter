@@ -1,4 +1,4 @@
-package com.low910.dinnergetter.validators;
+package com.benscruton.dinnergetter.validators;
 
 public class UserValidator {
     

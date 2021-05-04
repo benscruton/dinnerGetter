@@ -6,14 +6,11 @@ import MyContext from "../MyContext";
 export default function NewRecipeForm( props ) {
     const {curUser, setUser, addedRecipes, setAddedRecipes} = useContext(MyContext);
 
-    // const [ingredientInput, setIngredientInput] = useState([""]);
     const [recipeInputs, setRecipeInputs] = useState({
         name: "",
         steps: "",
         ingredients: [""]
-    }); // setRecipeInputs({...recipeInputs, [...recipeInputs.ingredients, e.target.value ??]})
-    // let ingredients = [...recipeInputs.ingredients];
-
+    }); 
     
     const handleChange = e => {
         if(e.target.name === "name" || e.target.name === "steps"){

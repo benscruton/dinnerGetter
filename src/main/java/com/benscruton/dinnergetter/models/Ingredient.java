@@ -1,4 +1,4 @@
-package com.low910.dinnergetter.models;
+package com.benscruton.dinnergetter.models;
 
 import java.util.Date;
 import java.util.List;
@@ -15,7 +15,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -37,9 +36,6 @@ public class Ingredient {
 
 	@NotEmpty
     private String name;
-
-    @Transient
-    private String dummyUserEmail;
 
     @Column(updatable=false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -151,14 +147,6 @@ public class Ingredient {
 
     public void setUsersWhoHaveThis(List<User> usersWhoHaveThis) {
         this.usersWhoHaveThis = usersWhoHaveThis;
-    }
-
-    public String getDummyUserEmail() {
-        return this.dummyUserEmail;
-    }
-
-    public void setDummyUserEmail(String dummyUserEmail) {
-        this.dummyUserEmail = dummyUserEmail;
     }
 
     public List<User> getUsersWhoPutThisOnList() {

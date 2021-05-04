@@ -58,7 +58,7 @@ const Nav = props =>{
                             type="search"
                             value={recipe.name}
                             onChange={(e)=>searchHandler(e)}
-                            className="form-control autocomplete grey-text text-darken-3"
+                            className="form-control autocomplete grey-text text-darken-3 left-align"
                         />
                         <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
                     </form>

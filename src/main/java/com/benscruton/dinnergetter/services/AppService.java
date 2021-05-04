@@ -1,14 +1,14 @@
-package com.low910.dinnergetter.services;
+package com.benscruton.dinnergetter.services;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.low910.dinnergetter.models.Ingredient;
-import com.low910.dinnergetter.models.Recipe;
-import com.low910.dinnergetter.models.User;
-import com.low910.dinnergetter.repositories.IngredientRepository;
-import com.low910.dinnergetter.repositories.RecipeRepository;
-import com.low910.dinnergetter.repositories.UserRepository;
+import com.benscruton.dinnergetter.models.Ingredient;
+import com.benscruton.dinnergetter.models.Recipe;
+import com.benscruton.dinnergetter.models.User;
+import com.benscruton.dinnergetter.repositories.IngredientRepository;
+import com.benscruton.dinnergetter.repositories.RecipeRepository;
+import com.benscruton.dinnergetter.repositories.UserRepository;
 
 import org.springframework.stereotype.Service;
 

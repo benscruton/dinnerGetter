@@ -20,14 +20,31 @@ const LandingPad = () => {
             //======================================================================
             // sets user in context
             //======================================================================
+                let pantry = res.data.pantry;
+                for(let i=0; i<pantry.length; i++){
+                    if(typeof pantry[i] === "string"){
+                        let name = pantry[i];
+                        pantry[i] = {name};
+                    }
+                }
+
+                let shoppingList = res.data.shoppingList;
+                for(let i=0; i<shoppingList.length; i++){
+                    if(typeof shoppingList[i] === "string"){
+                        let name = shoppingList[i];
+                        shoppingList[i] = {name};
+                        shoppingList[i].crossedOff = false;
+                    }
+                }
+            
                 setUser({
                     firstName: res.data.firstName,
                     lastName: res.data.lastName,
                     email: user.email,
                     addedRecipes: res.data.addedRecipes,
                     savedRecipes: res.data.savedRecipes,
-                    pantry: res.data.pantry,
-                    shoppingList: res.data.shoppingList
+                    pantry,
+                    shoppingList
                 });
                 // // set the user ingredient list, which has to be a string to make the external api call
                 // let pantryNames = res.data.pantry.map( i => (i.name));
@@ -64,30 +81,30 @@ const LandingPad = () => {
             //     }
             // }
             // )
-            .then((res) =>{
+            // .then((res) =>{
 
-                let tempPantry = [...curUser.pantry];
+            //     let tempPantry = [...curUser.pantry];
                 
-                let templist = "";
-                for(let i = 0; i < tempPantry.length; i ++){
-                    if(typeof tempPantry[i] === "number"){
-                        // console.log("HERE IS OUR AXIOS CALL FOR NUMBER", ingredients[i]);
-                        axios.get(`http://localhost:8080/api/ingredients/${tempPantry[i]}`)
-                            .then(res => {
-                                tempPantry.splice(i, 1, res.data);
-                                setUser({...curUser,
-                                    pantry: tempPantry
-                                });
-                                setPantry(tempPantry);
-                                templist += res.data.name.toLowerCase() + ",";
-                            }).catch(err => console.log(err));
-                    } else {
-                        templist += curUser.pantry[i].name.toLowerCase() + ",";
-                    }
-                }
-                setUserIngredientList(templist.substring(0, templist.length - 1));
-                console.log(templist.substring(0, templist.length - 1));
-            })
+            //     let templist = "";
+            //     for(let i = 0; i < tempPantry.length; i ++){
+            //         if(typeof tempPantry[i] === "number"){
+            //             // console.log("HERE IS OUR AXIOS CALL FOR NUMBER", ingredients[i]);
+            //             axios.get(`http://localhost:8080/api/ingredients/${tempPantry[i]}`)
+            //                 .then(res => {
+            //                     tempPantry.splice(i, 1, res.data);
+            //                     setUser({...curUser,
+            //                         pantry: tempPantry
+            //                     });
+            //                     setPantry(tempPantry);
+            //                     templist += res.data.name.toLowerCase() + ",";
+            //                 }).catch(err => console.log(err));
+            //         } else {
+            //             templist += curUser.pantry[i].name.toLowerCase() + ",";
+            //         }
+            //     }
+            //     setUserIngredientList(templist.substring(0, templist.length - 1));
+            //     console.log(templist.substring(0, templist.length - 1));
+            // })
             .then(() => {
                 navigate(redirectLocation? redirectLocation : "/dashboard");
             })

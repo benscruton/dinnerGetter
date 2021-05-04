@@ -1,20 +1,20 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import 'materialize-css/dist/css/materialize.min.css';
 import React, {useState, useContext} from 'react';
-// import GWTH from '../static/img/GWTH.jpg'
 import axios from "axios";
 import MyContext from "../MyContext";
-import AddIngredientForm from "./AddIngredientForm";
-// import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
 import ShopListEditMode from "./ShopListEditMode";
+import ShopListViewOnly from "./ShopListViewOnly";
 
 
 
-const ShoppingList = ({handleFormChange, handleFormSubmit}) => {
+const ShoppingList = ({editable}) => {
   const {user, isAuthenticated, isLoading } = useAuth0();
   const {curUser, setUser} = useContext(MyContext);
   const [storeMode, setStoreMode] = useState(false);
 
+  //======================================================================
+  // LIST EDITING, INCLUDING DRAG-AND-DROP FUNCTIONALITY
+  //======================================================================
   const handleDrop = move => {
     if(!move.destination) return;
     let adjList = [...curUser.shoppingList];
@@ -29,22 +29,20 @@ const ShoppingList = ({handleFormChange, handleFormSubmit}) => {
     setStoreMode(!storeMode);
   }
 
-  const toggleItemCrossed = (e, idx) => {
-    if(storeMode){
-      let adjList = [...curUser.shoppingList];
-      e.target.style.cssText = (e.target.style.cssText === ""? "text-decoration: line-through; color: lightgrey;" : "");
-      
+  // const toggleItemCrossed = (e, idx) => {
+  //   if(storeMode){
+  //     let adjList = [...curUser.shoppingList];
+  //     e.target.style.cssText = (e.target.style.cssText === ""? "text-decoration: line-through; color: lightgrey;" : "");
 
-      if(!adjList.dummyUserEmail){
-        adjList[idx].dummyUserEmail = true;
-      }
-      if(adjList.dummyUserEmail){
-        adjList[idx].dummyUserEmail = false;
-      }
-      setUser({...curUser, shoppingList:adjList});
-      // console.log(e.target.)
-    }
-  }
+  //     if(!adjList.dummyUserEmail){
+  //       adjList[idx].dummyUserEmail = true;
+  //     }
+  //     if(adjList.dummyUserEmail){
+  //       adjList[idx].dummyUserEmail = false;
+  //     }
+  //     setUser({...curUser, shoppingList:adjList});
+  //   }
+  // }
 
   const saveListOrder = () => {
     let listOrder = [...curUser.shoppingList];
@@ -55,65 +53,35 @@ const ShoppingList = ({handleFormChange, handleFormSubmit}) => {
       }).catch(err => console.log(err));
   }
 
+
+  
+
   // e.target.style.cssText
 
-  if (isLoading) return(<div>Loading...</div>)
+  // if (isLoading) return(<div>Loading...</div>)
     return (
-          <div className="responsive-table row">
-            <div className="col s10 offset-s1 card blue-grey darken-1">
-              <div className="card-content white-text">
-                <span className="card-title">Shopping List</span>
-                  <ul className="collection" style={{marginBottom: "0px"}}>
-                    <li className="collection-item blue-grey darken-1">
-                      {/* <span>STORE MODE:</span> */}
-                      <div className="switch">
-                        <label className="white-text">
-                          EDIT MODE
-                          <input
-                            type="checkbox"
-                            ischecked={storeMode? "true" : "false"}
-                            onChange={switchMode}
-                          />
-                          <span className="lever"></span>
-                          STORE MODE
-                        </label>
-                      </div>
-                    </li>
-                    {storeMode?
-                      <></>
-                      :
-                      <>
-                        <li className="grey lighten-3">
-                            <AddIngredientForm
-                              handleChange={handleFormChange}
-                              handleSubmit={handleFormSubmit}
-                            />
-                        </li>
-                        <li className="white">
-                          <button
-                            className="btn orange lighten-2 black-text center"
-                            style={{marginTop: "-10px", marginBottom: "5px"}}
-                            onClick={saveListOrder}
-                          >
-                            <i className="material-icons right">save</i>
-                            Save List Order
-                          </button>
-                        </li>
-                      </>
-                    }
-                  </ul>
+      <div className="row">
+        <div className="col s10 offset-s1 card blue-grey darken-1">
+          <div className="card-content white-text">
+            <span className="card-title">Shopping List</span>
 
-                  <ShopListEditMode
-                    handleDrop={handleDrop}
-                    curUser={curUser}
-                    storeMode={storeMode}
-                    toggleItemCrossed={toggleItemCrossed}
-                  />
+              {editable? 
+                <ShopListEditMode
+                  handleDrop={handleDrop}
+                  storeMode={storeMode}
+                  // toggleItemCrossed={toggleItemCrossed}
+                  switchMode={switchMode}
+                  saveListOrder={saveListOrder}
+                />
+                :
+                <ShopListViewOnly
+                  curUser={curUser}
+                />
+              }
 
-
-              </div>
-            </div>
           </div>
+        </div>
+      </div>
     );  
 
 
