@@ -6,7 +6,7 @@ import axios from "axios";
 
 
 function OnHand(props) {
-  const {pantry, setPantry, curUser, setUser} = useContext(MyContext);
+  const {curUser, setUser} = useContext(MyContext);
 
   const [ingredient, setIngredient] = useState({name: ""});
 
@@ -15,27 +15,24 @@ function OnHand(props) {
   }
 
   const addToPantry = (e) => {
-    e.preventDefault();
-    // ingredient.dummyUserEmail = curUser.email;
-    
+    e.preventDefault(); 
     axios.post(`http://localhost:8080/api/users/${curUser.email}/addtopantry`, ingredient)
-    .then(response => {
-        if(response.data){
-            setUser({...curUser,
-              pantry: [...curUser.pantry, ingredient]
-            });
+      .then(rsp => {
+        if(rsp.data){
+          let pantry = [...curUser.pantry, ingredient];
+          setUser({...curUser, pantry});
         }
         setIngredient({name: ""});
-    }).catch( err => console.log(err));
+      }).catch( err => console.log(err));
   }
 
   const removeFromPantry = (e, ingredient) => {
-    ingredient.dummyUserEmail = curUser.email;
     axios.post(`http://localhost:8080/api/users/${curUser.email}/removefrompantry`, ingredient)
     .then(rsp => {
-        let pantry = [...curUser.pantry];
-        pantry.splice(pantry.indexOf(ingredient), 1);
-        setUser({...curUser, pantry});
+      console.log(rsp);
+      let pantry = [...curUser.pantry];
+      pantry.splice(pantry.indexOf(ingredient), 1);
+      setUser({...curUser, pantry});
     }).catch( err => console.log(err));
   }
 

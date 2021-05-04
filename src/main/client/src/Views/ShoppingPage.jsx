@@ -1,6 +1,6 @@
 import { navigate } from '@reach/router';
 import { useAuth0 } from '@auth0/auth0-react';
-import axios from 'axios';
+// import axios from 'axios';
 import M from "materialize-css";
 import React, { useContext, useEffect, useState } from "react";
 import ShoppingList from "../Components/ShoppingList";
@@ -24,33 +24,33 @@ const ShoppingPage = () => {
             return;
         }
         //=======================================================
-        // api post to make sure user exists         
+        // api post to make sure user exists  -- THIS SHOULD BE HANDLED IN THE LANDING PAD NOW      
         //=======================================================        
         // axios.post('http://localhost:8080/api/users/checkdb', user)
-        //     .then(res =>{
-        //         // console.log(res);
-        //         // I was just guessing on how the data is going to be returned idk if this below will work but fuck it
+        //     .then(rsp =>{
+        //         // console.log(rsp);
+        //         // I was just guessing on how the data is going to be returned idk if this below will work
         //         setUser({
-        //             firstName: res.data.firstName,
-        //             lastName: res.data.lastName,
+        //             firstName: rsp.data.firstName,
+        //             lastName: rsp.data.lastName,
         //             email: user.email,
-        //             addedRecipes: res.data.addedRecipes,
-        //             savedRecipes: res.data.savedRecipes,
-        //             pantry: res.data.pantry,
-        //             shoppingList: res.data.shoppingList
+        //             addedRecipes: rsp.data.addedRecipes,
+        //             savedRecipes: rsp.data.savedRecipes,
+        //             pantry: rsp.data.pantry,
+        //             shoppingList: rsp.data.shoppingList
         //         });
         //         // setShoppingList([ ...curUser.shoppingList]);
-        //         return res;
+        //         return rsp;
         //     })
-        //     .then(res => {
+        //     .then(rsp => {
         //         let ingredients = curUser.shoppingList;
         //         for (let i = 0; i < ingredients.length; i++) {
         //             if (typeof ingredients[i] === "number") {
         //                 console.log("HERE IS OUR AXIOS CALL FOR NUMBER", ingredients[i]);
         //                 axios.get(`http://localhost:8080/api/ingredients/${ingredients[i]}`)
-        //                     .then(res => {
-        //                         console.log(res.data);
-        //                         ingredients.splice(i, 1, res.data);
+        //                     .then(rsp => {
+        //                         console.log(rsp.data);
+        //                         ingredients.splice(i, 1, rsp.data);
         //                         setUser({
         //                             ...curUser,
         //                             shoppingList: ingredients
@@ -64,32 +64,6 @@ const ShoppingPage = () => {
         //         setShoppingList(curUser?.shoppingList);
         //     });
     }, []);
-
-    // const handleFormChange = e => {
-    //     setIngredient({ name: e.target.value });
-    // }
-    // const handleFormSubmit = (e) => {
-    //     e.preventDefault();
-    //     ingredient.dummyUserEmail = curUser.email;
-
-    //     // setIngredient({name: ""});
-    //     console.log(ingredient.dummyUserEmail);
-
-    //     axios.post('http://localhost:8080/api/ingredients/addtoshoppinglist', ingredient)
-    //         .then(response => {
-    //             console.log(response.data);
-    //             if(response.data){
-    //                 let newList = [...curUser.shoppingList];
-    //                 ingredient.dummyUserEmail = "";
-    //                 newList.push(ingredient);
-    //                 setUser({...curUser, shoppingList:newList});
-    //             }
-    //             // setShoppingList(response.data);
-    //             // setCounter(counter + 1);
-    //             setIngredient({ name: "" });
-    //         }).catch(err => console.log(err));
-    // }
-
 
 
     return (

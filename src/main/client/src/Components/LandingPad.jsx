@@ -13,14 +13,14 @@ const LandingPad = () => {
     //======================================================================
     if (isAuthenticated) {
         axios.post('http://localhost:8080/api/users/checkdb', user)
-        .then(res =>{
-            console.log(res);
-            // I was just guessing on how the data is going to be returned idk if this below will work but fuck it
+        .then(rsp =>{
+            console.log(rsp);
+            // I was just guessing on how the data is going to be returned idk if this below will work
             
             //======================================================================
             // sets user in context
             //======================================================================
-                let pantry = res.data.pantry;
+                let pantry = rsp.data.pantry;
                 for(let i=0; i<pantry.length; i++){
                     if(typeof pantry[i] === "string"){
                         let name = pantry[i];
@@ -28,7 +28,7 @@ const LandingPad = () => {
                     }
                 }
 
-                let shoppingList = res.data.shoppingList;
+                let shoppingList = rsp.data.shoppingList;
                 for(let i=0; i<shoppingList.length; i++){
                     if(typeof shoppingList[i] === "string"){
                         let name = shoppingList[i];
@@ -38,37 +38,37 @@ const LandingPad = () => {
                 }
             
                 setUser({
-                    firstName: res.data.firstName,
-                    lastName: res.data.lastName,
+                    firstName: rsp.data.firstName,
+                    lastName: rsp.data.lastName,
                     email: user.email,
-                    addedRecipes: res.data.addedRecipes,
-                    savedRecipes: res.data.savedRecipes,
+                    addedRecipes: rsp.data.addedRecipes,
+                    savedRecipes: rsp.data.savedRecipes,
                     pantry,
                     shoppingList
                 });
                 // // set the user ingredient list, which has to be a string to make the external api call
-                // let pantryNames = res.data.pantry.map( i => (i.name));
+                // let pantryNames = rsp.data.pantry.map( i => (i.name));
                 // console.log(pantryNames);
                 // let templist = "";
-                // for(let i = 0; i < res.data.pantry; i ++){
+                // for(let i = 0; i < rsp.data.pantry; i ++){
                 //     // setUserIngredientList(userIngredientList = userIngredientList + "," + curUser.pantry[i].name);
-                //     templist += res.data.pantry[i].name + ","
+                //     templist += rsp.data.pantry[i].name + ","
                 // }
                 // setUserIngredientList(templist);
                 // // console.log(curUser.pantry);
                 // console.log(templist);
                 // // console.log(userIngredientList);
-                return res;
+                return rsp;
             })
-            // .then(res=>{
+            // .then(rsp=>{
             //     let ingredients = curUser.shoppingList;
             //     for (let i = 0; i < ingredients.length; i++) {
             //         if (typeof ingredients[i] === "number") {
             //             console.log("HERE IS OUR AXIOS CALL FOR NUMBER", ingredients[i]);
             //             axios.get(`http://localhost:8080/api/ingredients/${ingredients[i]}`)
-            //                 .then(res => {
-            //                     console.log(res.data);
-            //                     ingredients.splice(i, 1, res.data);
+            //                 .then(rsp => {
+            //                     console.log(rsp.data);
+            //                     ingredients.splice(i, 1, rsp.data);
             //                     setUser({
             //                         ...curUser,
             //                         shoppingList: ingredients
@@ -81,7 +81,7 @@ const LandingPad = () => {
             //     }
             // }
             // )
-            // .then((res) =>{
+            // .then((rsp) =>{
 
             //     let tempPantry = [...curUser.pantry];
                 
@@ -90,13 +90,13 @@ const LandingPad = () => {
             //         if(typeof tempPantry[i] === "number"){
             //             // console.log("HERE IS OUR AXIOS CALL FOR NUMBER", ingredients[i]);
             //             axios.get(`http://localhost:8080/api/ingredients/${tempPantry[i]}`)
-            //                 .then(res => {
-            //                     tempPantry.splice(i, 1, res.data);
+            //                 .then(rsp => {
+            //                     tempPantry.splice(i, 1, rsp.data);
             //                     setUser({...curUser,
             //                         pantry: tempPantry
             //                     });
             //                     setPantry(tempPantry);
-            //                     templist += res.data.name.toLowerCase() + ",";
+            //                     templist += rsp.data.name.toLowerCase() + ",";
             //                 }).catch(err => console.log(err));
             //         } else {
             //             templist += curUser.pantry[i].name.toLowerCase() + ",";

@@ -66,7 +66,6 @@ public class AppService {
     // find an ingredient by id
     //======================================================================
     public Ingredient createIngredient(Ingredient ingredient){
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>> inside create ingredient App Service <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
         Ingredient i = (Ingredient) this.findIngredientByName(ingredient.getName());
         if(i != null){
             return i;

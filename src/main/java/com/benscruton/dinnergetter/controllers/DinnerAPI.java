@@ -167,7 +167,6 @@ public class DinnerAPI {
         for(int j=1; j<ingredientNames.length; j++){
             Ingredient i = new Ingredient();
             i.setName(ingredientNames[j]);
-            System.out.println("in the for loop");
             Ingredient iFromDB = this.serv.createIngredient(i);
             this.serv.addIngredientToRecipe(rId, iFromDB.getId());
         }
