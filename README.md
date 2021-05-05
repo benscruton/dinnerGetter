@@ -14,4 +14,7 @@ The back end of the application is written in Java, and connected to a React fro
 The original project can be found here:
 https://github.com/LoW910/dinnerGetter/
 
-
+Other contributors to the original project:
+- Daniel Soots: https://github.com/LoW910
+- Brandon Hansen: https://github.com/bhansen0091
+- Sam Pattison: https://github.com/sdpattison
