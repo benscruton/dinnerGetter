@@ -28,7 +28,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @JsonIdentityInfo(
     generator = ObjectIdGenerators.PropertyGenerator.class, 
     property = "name")
-@JsonIgnoreProperties({"usersWhoHaveThis", "usersWhoPutThisOnList"})
+@JsonIgnoreProperties({"usersWhoHaveThis", "usersWhoPutThisOnList", "sublistsThatHaveThs"})
 public class Ingredient {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -79,7 +79,16 @@ public class Ingredient {
     private List<User> usersWhoPutThisOnList;
 
     
-    
+    //======================================================================
+	// many-to-many INGREDIENTS in SUBLIST for categorized lists
+	//======================================================================
+    // @ManyToMany(fetch = FetchType.LAZY)
+    // @JoinTable(
+    //     name = "sublists_ingredients",
+    //     joinColumns = @JoinColumn(name = "ingredient_id"),
+    //     inverseJoinColumns = @JoinColumn(name = "sublist_id")
+    // )
+    // private List<SubList> sublistsThatHaveThis;
 
 
     @PrePersist
@@ -156,6 +165,14 @@ public class Ingredient {
     public void setUsersWhoPutThisOnList(List<User> usersWhoPutThisOnList) {
         this.usersWhoPutThisOnList = usersWhoPutThisOnList;
     }
+
+    // public List<SubList> getSublistsThatHaveThis() {
+    //     return this.sublistsThatHaveThis;
+    // }
+
+    // public void setSublistsThatHaveThis(List<SubList> sublistsThatHaveThis) {
+    //     this.sublistsThatHaveThis = sublistsThatHaveThis;
+    // }
 
 
 }

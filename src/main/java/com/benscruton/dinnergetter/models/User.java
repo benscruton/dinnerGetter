@@ -111,6 +111,9 @@ public class User {
     )
     private List<Ingredient> shoppingList;
 
+    // @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    // List<SubList> categorizedShoppingList;
+
     
     public User() {
     }
@@ -225,5 +228,15 @@ public class User {
     public void setShoppingList(List<Ingredient> shoppingList) {
         this.shoppingList = shoppingList;
     }
+
+
+    // public List<SubList> getCategorizedShoppingList() {
+    //     return this.categorizedShoppingList;
+    // }
+
+    // public void setCategorizedShoppingList(List<SubList> categorizedShoppingList) {
+    //     this.categorizedShoppingList = categorizedShoppingList;
+    // }
+
 
 }
