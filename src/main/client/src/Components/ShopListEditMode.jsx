@@ -34,6 +34,7 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
   const handleFormChange = (e) => {
     setIngredient({ name: e.target.value });
   };
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
     // ingredient.dummyUserEmail = curUser.email;
@@ -129,61 +130,69 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
 
       <DragDropContext onDragEnd={handleDrop}>
 
-        <Droppable droppableId="grocerylist">
-          { provided => (
-            <ul className="collection" style={{marginTop: "0px", backgroundImage: `url(${GWTH})`}} {...provided.droppableProps} ref={provided.innerRef} >
-              
-              {curUser.shoppingList?
-                  curUser.shoppingList.map( (i, idx) => 
-                  <Draggable 
-                    key={idx}
-                    draggableId={`id-${i.name}-${idx}`}
-                    index={idx}
-                    isDragDisabled={storeMode}
-                  >
 
-                      { prov =>
-                      <li
-                        className="collection-item left-align blue-grey-text text-darken-1"
-                        {...prov.draggableProps}
-                        {...prov.dragHandleProps}
-                        ref={prov.innerRef}
-                        // onClick={toggleItemCrossed}
-                        >
+        {curUser.shoppingList?
+          curUser.shoppingList.map( (sublist, idx1) =>
 
-                        {/* <input type="checkbox" /> */}
-                        <span
-                          style={i.crossedOff? {textDecoration: "line-through", color: "lightgrey"} : {textDecoration: "none"}}
-                          onClick={(e) => toggleItemCrossed(e, idx)}
-                        >
-                          {i.name? i.name : i}
-                        </span>
+          <Droppable key={idx1} droppableId={sublist.category}>
+            { provided => (
+              <ul className="collection" style={{marginTop: "0px", marginBottom:"0px", backgroundImage: `url(${GWTH})`}} {...provided.droppableProps} ref={provided.innerRef} >
+                <li className="collection-item center-align blue-grey darken-1 white-text">
+                  {sublist.category.toUpperCase()}
+                </li>
+                {
+                  sublist.ingredients.map( (i, idx) => 
+                    <Draggable 
+                      key={idx}
+                      draggableId={`${i.name}-${idx}`}
+                      index={idx}
+                      isDragDisabled={storeMode}
+                    >
 
-                        {storeMode?
-                          <></>
-                          : 
-                          <button
-                            className="btn red darken-2 right"
-                            style={{marginTop: "-5px"}}
-                            onClick={() => removeIngredientFromList(i.name, idx)}
+                        { prov =>
+                        <li
+                          className="collection-item left-align blue-grey-text text-darken-1"
+                          {...prov.draggableProps}
+                          {...prov.dragHandleProps}
+                          ref={prov.innerRef}
+                          // onClick={toggleItemCrossed}
                           >
-                            <i className="material-icons">delete</i>
-                          </button>
+
+                          {/* <input type="checkbox" /> */}
+                          <span
+                            style={i.crossedOff? {textDecoration: "line-through", color: "lightgrey"} : {textDecoration: "none"}}
+                            onClick={(e) => toggleItemCrossed(e, idx)}
+                          >
+                            {i.name? i.name : i}
+                          </span>
+
+                          {storeMode?
+                            <></>
+                            : 
+                            <button
+                              className="btn red darken-2 right"
+                              style={{marginTop: "-5px"}}
+                              onClick={() => removeIngredientFromList(i.name, idx)}
+                            >
+                              <i className="material-icons">delete</i>
+                            </button>
+                          }
+                        </li>
                         }
-                      </li>
-                      }
 
-                  </Draggable>
-                  )
-                  :
-                  <></>
-              }
+                    </Draggable>
+                    )
+                    
+                }
 
-              {provided.placeholder}
-            </ul>
-          )}
-        </Droppable>
-
+                {provided.placeholder}
+              </ul>
+            )}
+          </Droppable>
+          )
+          :
+          <></>
+        }
 
       </DragDropContext>
     </>

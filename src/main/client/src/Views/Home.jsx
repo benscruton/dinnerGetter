@@ -109,7 +109,7 @@ const Home = props =>{
                         ingredient={ingredient}
                         removeFromPantry={removeFromPantry}
                     />
-                    <ShoppingList editable={false} />
+                    {/* <ShoppingList editable={false} /> */}
                 </div>
             </div>
             <div className="row">

@@ -28,7 +28,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @JsonIdentityInfo(
     generator = ObjectIdGenerators.PropertyGenerator.class, 
     property = "name")
-@JsonIgnoreProperties({"usersWhoHaveThis", "usersWhoPutThisOnList", "sublistsThatHaveThs"})
+@JsonIgnoreProperties({"usersWhoHaveThis", "usersWhoPutThisOnList", "sublistsThatHaveThis"})
 public class Ingredient {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -70,25 +70,25 @@ public class Ingredient {
     //======================================================================
 	// many-to-many INGREDIENTS in the pantry of USERS
 	//======================================================================
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "users_ingredients_shopping",
-        joinColumns = @JoinColumn(name = "ingredient_id"),
-        inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private List<User> usersWhoPutThisOnList;
+    // @ManyToMany(fetch = FetchType.LAZY)
+    // @JoinTable(
+    //     name = "users_ingredients_shopping",
+    //     joinColumns = @JoinColumn(name = "ingredient_id"),
+    //     inverseJoinColumns = @JoinColumn(name = "user_id")
+    // )
+    // private List<User> usersWhoPutThisOnList;
 
     
     //======================================================================
 	// many-to-many INGREDIENTS in SUBLIST for categorized lists
 	//======================================================================
-    // @ManyToMany(fetch = FetchType.LAZY)
-    // @JoinTable(
-    //     name = "sublists_ingredients",
-    //     joinColumns = @JoinColumn(name = "ingredient_id"),
-    //     inverseJoinColumns = @JoinColumn(name = "sublist_id")
-    // )
-    // private List<SubList> sublistsThatHaveThis;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "sublists_ingredients",
+        joinColumns = @JoinColumn(name = "ingredient_id"),
+        inverseJoinColumns = @JoinColumn(name = "sublist_id")
+    )
+    private List<SubList> sublistsThatHaveThis;
 
 
     @PrePersist
@@ -158,21 +158,21 @@ public class Ingredient {
         this.usersWhoHaveThis = usersWhoHaveThis;
     }
 
-    public List<User> getUsersWhoPutThisOnList() {
-        return this.usersWhoPutThisOnList;
-    }
-
-    public void setUsersWhoPutThisOnList(List<User> usersWhoPutThisOnList) {
-        this.usersWhoPutThisOnList = usersWhoPutThisOnList;
-    }
-
-    // public List<SubList> getSublistsThatHaveThis() {
-    //     return this.sublistsThatHaveThis;
+    // public List<User> getUsersWhoPutThisOnList() {
+    //     return this.usersWhoPutThisOnList;
     // }
 
-    // public void setSublistsThatHaveThis(List<SubList> sublistsThatHaveThis) {
-    //     this.sublistsThatHaveThis = sublistsThatHaveThis;
+    // public void setUsersWhoPutThisOnList(List<User> usersWhoPutThisOnList) {
+    //     this.usersWhoPutThisOnList = usersWhoPutThisOnList;
     // }
+
+    public List<SubList> getSublistsThatHaveThis() {
+        return this.sublistsThatHaveThis;
+    }
+
+    public void setSublistsThatHaveThis(List<SubList> sublistsThatHaveThis) {
+        this.sublistsThatHaveThis = sublistsThatHaveThis;
+    }
 
 
 }

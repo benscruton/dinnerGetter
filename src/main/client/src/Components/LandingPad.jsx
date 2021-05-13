@@ -28,14 +28,40 @@ const LandingPad = () => {
                     }
                 }
 
-                let shoppingList = rsp.data.shoppingList;
-                for(let i=0; i<shoppingList.length; i++){
-                    if(typeof shoppingList[i] === "string"){
-                        let name = shoppingList[i];
-                        shoppingList[i] = {name};
-                        shoppingList[i].crossedOff = false;
+                // let shoppingList = rsp.data.shoppingList;
+                // for(let i=0; i<shoppingList.length; i++){
+                //     if(typeof shoppingList[i] === "string"){
+                //         let name = shoppingList[i];
+                //         shoppingList[i] = {name};
+                //         shoppingList[i].crossedOff = false;
+                //     }
+                // }
+
+                let catList = rsp.data.categorizedShoppingList;
+                let shoppingList = [];
+                for(let i=0; i<catList.length; i++){
+                    
+                    let ingredients = [];
+
+                    for(let j=0; j<catList[i].ingredients.length; j++){
+                        let ing = catList[i].ingredients[j];
+                        if(typeof ing === "string"){
+                            let category = ing;
+                            ing = {category};
+                        }
+                        ing.crossedOff = false;
+                        ingredients.push(ing);
                     }
+
+                    let sublist = {
+                        category: catList[i].category,
+                        ingredients
+                    };
+                    shoppingList.push(sublist);
                 }
+                console.log(catList);
+
+
             
                 setUser({
                     firstName: rsp.data.firstName,

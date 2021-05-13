@@ -58,14 +58,14 @@ const MobileNav = () =>{
                 <li className="row">
                     <form className="input-field col s8 offset-s2">
                         <input
-                            id="search"
+                            id="msearch"
                             type="search"
                             value={recipe.name}
                             onChange={(e)=>searchHandler(e)}
                             className="form-control dropdown-trigger grey-text text-darken-3"
                             data-target="search-results"
                         />
-                        <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
+                        <label className="label-icon" htmlFor="msearch"><i className="material-icons">search</i></label>
                         <ul className="dropdown-content" id="search-results">
                             {searchResults?.map((r,idx )=>
                                 <p key={idx}><li>{r.name}</li></p>

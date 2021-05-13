@@ -15,13 +15,56 @@ const ShoppingList = ({editable}) => {
   // LIST EDITING, INCLUDING DRAG-AND-DROP FUNCTIONALITY
   //======================================================================
   const handleDrop = move => {
+    console.log("hello");
+    console.log(move);
     if(!move.destination) return;
-    let adjList = [...curUser.shoppingList];
 
-    const [movedItem] = adjList.splice(move.source.index, 1);
-    adjList.splice(move.destination.index, 0, movedItem);
+    if(move.destination.droppableId === move.source.droppableId){
+      // moving within same list
+      let fullList = [...curUser.shoppingList];
+      let catnames = fullList.map(sublist => sublist.category);
+      let listIdx = catnames.indexOf(move.destination.droppableId);
 
-    setUser({...curUser, shoppingList:adjList});
+      let adjList = [...fullList[listIdx].ingredients];
+
+      const [movedItem] = adjList.splice(move.source.index, 1);
+      adjList.splice(move.destination.index, 0, movedItem);
+
+      fullList[listIdx].ingredients = adjList;
+
+      setUser({...curUser,
+        shoppingList: fullList
+      });
+      return;
+    }
+
+
+    else{
+      // moving between lists
+      let fullList = [...curUser.shoppingList];
+      let catnames = fullList.map(sublist => sublist.category);
+      let srcIdx = catnames.indexOf(move.source.droppableId);
+      let destIdx = catnames.indexOf(move.destination.droppableId);
+
+      let adjSrcList = [...fullList[srcIdx].ingredients];
+      let adjDestList = [...fullList[destIdx].ingredients];
+
+      const [movedItem] = adjSrcList.splice(move.source.index, 1);
+      adjDestList.splice(move.destination.index, 0, movedItem);
+
+      fullList[srcIdx].ingredients = adjSrcList;
+      fullList[destIdx].ingredients = adjDestList;
+
+      setUser({...curUser,
+        shoppingList: fullList
+      });
+      return;
+    }
+
+
+
+
+
   }
 
   const switchMode = () => {

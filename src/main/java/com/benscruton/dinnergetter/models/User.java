@@ -1,5 +1,6 @@
 package com.benscruton.dinnergetter.models;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -103,20 +104,19 @@ public class User {
     //======================================================================
 	// many to many USERS who have INGREDIENTS (pantry)
 	//======================================================================
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "users_ingredients_shopping",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "ingredient_id")
-    )
-    private List<Ingredient> shoppingList;
+    // @ManyToMany(fetch = FetchType.LAZY)
+    // @JoinTable(
+    //     name = "users_ingredients_shopping",
+    //     joinColumns = @JoinColumn(name = "user_id"),
+    //     inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+    // )
+    // private List<Ingredient> shoppingList;
 
-    // @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    // List<SubList> categorizedShoppingList;
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<SubList> categorizedShoppingList;
 
     
-    public User() {
-    }
+    public User() {}
     
     
 
@@ -221,22 +221,22 @@ public class User {
         this.pantry = pantry;
     }
 
-    public List<Ingredient> getShoppingList() {
-        return this.shoppingList;
-    }
-
-    public void setShoppingList(List<Ingredient> shoppingList) {
-        this.shoppingList = shoppingList;
-    }
-
-
-    // public List<SubList> getCategorizedShoppingList() {
-    //     return this.categorizedShoppingList;
+    // public List<Ingredient> getShoppingList() {
+    //     return this.shoppingList;
     // }
 
-    // public void setCategorizedShoppingList(List<SubList> categorizedShoppingList) {
-    //     this.categorizedShoppingList = categorizedShoppingList;
+    // public void setShoppingList(List<Ingredient> shoppingList) {
+    //     this.shoppingList = shoppingList;
     // }
+
+
+    public List<SubList> getCategorizedShoppingList() {
+        return this.categorizedShoppingList;
+    }
+
+    public void setCategorizedShoppingList(List<SubList> categorizedShoppingList) {
+        this.categorizedShoppingList = categorizedShoppingList;
+    }
 
 
 }
