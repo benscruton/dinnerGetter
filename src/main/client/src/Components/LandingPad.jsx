@@ -55,7 +55,8 @@ const LandingPad = () => {
 
                     let sublist = {
                         category: catList[i].category,
-                        ingredients
+                        ingredients,
+                        formInput: ""
                     };
                     shoppingList.push(sublist);
                 }

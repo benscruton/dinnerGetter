@@ -32,9 +32,10 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
   // ADD / REMOVE INGREDIENT FORM FUNCTIONALITY
   //======================================================================
 
-  const handleFormChange = (e) => {
-    setIngredient({ name: e.target.value });
-    console.log(e);
+  const handleFormChange = (e, idx) => {
+    let shoppingList = [...curUser.shoppingList];
+    shoppingList[idx].formInput = e.target.value;
+    setUser({...curUser, shoppingList});
   };
 
   const handleFormSubmit = (e) => {
@@ -190,11 +191,18 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
                 {storeMode ?
                   <></>
                   :
-                  <li className="grey lighten-3">
-                    <AddIngredientForm
-                      ingredient={ingredient}
-                      handleChange={handleFormChange}
-                      handleSubmit={handleFormSubmit}
+                  // <li className="grey lighten-3">
+                  //   <AddIngredientForm
+                  //     ingredient={ingredient}
+                  //     handleChange={handleFormChange}
+                  //     handleSubmit={handleFormSubmit}
+                  //   />
+                  // </li>
+                  <li className="collection-item left-align blue-grey-text text-darken-1">
+                    <input
+                      value={sublist.formInput}
+                      onChange={(e) => handleFormChange(e, idx1)}
+                      className="left-align"
                     />
                   </li>
                 }
