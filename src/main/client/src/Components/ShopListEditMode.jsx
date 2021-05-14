@@ -10,6 +10,7 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
   const {curUser, setUser} = useContext(MyContext);
 
   const [ingredient, setIngredient] = useState({name: ""});
+  
 
   const removeIngredientFromList = (name, idx) => {
 
@@ -33,6 +34,7 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
 
   const handleFormChange = (e) => {
     setIngredient({ name: e.target.value });
+    console.log(e);
   };
 
   const handleFormSubmit = (e) => {
@@ -105,13 +107,13 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
           <></>
           :
           <>
-            <li className="grey lighten-3">
+            {/* <li className="grey lighten-3">
                 <AddIngredientForm
                   ingredient={ingredient}
                   handleChange={handleFormChange}
                   handleSubmit={handleFormSubmit}
                 />
-            </li>
+            </li> */}
             <li className="white">
               <button
                 className="btn orange lighten-2 black-text center"
@@ -158,7 +160,6 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
                           // onClick={toggleItemCrossed}
                           >
 
-                          {/* <input type="checkbox" /> */}
                           <span
                             style={i.crossedOff? {textDecoration: "line-through", color: "lightgrey"} : {textDecoration: "none"}}
                             onClick={(e) => toggleItemCrossed(e, idx)}
@@ -181,11 +182,23 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
                         }
 
                     </Draggable>
-                    )
-                    
+                    )  
                 }
 
                 {provided.placeholder}
+
+                {storeMode ?
+                  <></>
+                  :
+                  <li className="grey lighten-3">
+                    <AddIngredientForm
+                      ingredient={ingredient}
+                      handleChange={handleFormChange}
+                      handleSubmit={handleFormSubmit}
+                    />
+                  </li>
+                }
+
               </ul>
             )}
           </Droppable>

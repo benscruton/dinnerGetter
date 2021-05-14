@@ -46,8 +46,8 @@ const LandingPad = () => {
                     for(let j=0; j<catList[i].ingredients.length; j++){
                         let ing = catList[i].ingredients[j];
                         if(typeof ing === "string"){
-                            let category = ing;
-                            ing = {category};
+                            let name = ing;
+                            ing = {name};
                         }
                         ing.crossedOff = false;
                         ingredients.push(ing);
