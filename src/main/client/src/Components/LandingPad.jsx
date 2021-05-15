@@ -54,6 +54,7 @@ const LandingPad = () => {
                     }
 
                     let sublist = {
+                        id: catList[i].id,
                         category: catList[i].category,
                         ingredients,
                         formInput: ""
