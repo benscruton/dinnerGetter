@@ -9,38 +9,6 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
 
   const {curUser, setUser} = useContext(MyContext);
 
-  // const [ingredient, setIngredient] = useState({name: ""});
-  
-
-  // const removeIngredientFromList = (name, idx) => {
-
-  //   console.log(name);
-  //   let i = {name};
-  //   // i.dummyUserEmail = curUser.email;
-  //   axios.post(`http://localhost:8080/api/users/${curUser.email}/removefromshoppinglist`, i)
-  //     .then( response => {
-  //       console.log(response.data);
-  //       let adjList = [...curUser.shoppingList];
-  //       adjList.splice(idx, 1);
-  //       setUser({...curUser, shoppingList: adjList});
-        
-  //     })
-  //     .catch(err => console.log(err));
-  // };
-
-  const removeIngredient = (slId, slIdx, name, ingIdx, ing) => {
-    let i = {name};
-    axios.post(`http://localhost:8080/api/lists/${slId}/removeingredient`, i)
-      .then(() => {
-        let shoppingList = [...curUser.shoppingList];
-        let adjList = shoppingList[slIdx];
-        adjList.ingredients.splice(ingIdx, 1);
-        shoppingList[slIdx] = adjList;
-        setUser({...curUser, shoppingList});
-      })
-      .catch(err => console.log(err));
-  };
-
   //======================================================================
   // ADD / REMOVE INGREDIENT FORM FUNCTIONALITY
   //======================================================================
@@ -51,7 +19,7 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
     setUser({...curUser, shoppingList});
   };
 
-  const addToSubList = (sl, idx) => {
+  const addIngredient = (sl, idx) => {
     let ingredient = {name: sl.formInput};
     axios.post(`http://localhost:8080/api/lists/${sl.id}/addingredient`, ingredient)
       .then(rsp => {
@@ -66,31 +34,42 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
       .catch(err => console.log(err));
   };
 
-
+  const removeIngredient = (slId, slIdx, name, ingIdx) => {
+    let i = {name};
+    axios.post(`http://localhost:8080/api/lists/${slId}/removeingredient`, i)
+      .then(() => {
+        let shoppingList = [...curUser.shoppingList];
+        let adjList = shoppingList[slIdx];
+        adjList.ingredients.splice(ingIdx, 1);
+        shoppingList[slIdx] = adjList;
+        setUser({...curUser, shoppingList});
+      })
+      .catch(err => console.log(err));
+  };
 
 
   //======================================================================
   // STORE MODE: CROSS OFF INGREDIENT
   //======================================================================
-  const toggleItemCrossed = (e, idx) => {
+  // const toggleItemCrossed = (e, idx) => {
+  //   if(storeMode){
+
+  //     let shoppingList = [...curUser.shoppingList];
+
+  //     shoppingList[idx].crossedOff = !shoppingList[idx].crossedOff;
+
+
+  //     setUser({...curUser, shoppingList});
+  //   }
+  // }
+
+  const toggleItemCrossedOuter = (slIdx, ingIdx) => {
     if(storeMode){
       let shoppingList = [...curUser.shoppingList];
-
-      // e.target.style.cssText = (e.target.style.cssText === ""? "text-decoration: line-through; color: lightgrey;" : "");
-
-      // if(!adjList.crossedOff){
-      //   adjList[idx].crossedOff = true;
-      // }
-      // if(adjList.crossedOff){
-      //   adjList[idx].crossedOff = false;
-      // }
-
-      shoppingList[idx].crossedOff = !shoppingList[idx].crossedOff;
-
-
+      shoppingList[slIdx].ingredients[ingIdx].crossedOff = !shoppingList[slIdx].ingredients[ingIdx].crossedOff;
       setUser({...curUser, shoppingList});
     }
-  }
+  };
 
   return (
     <>
@@ -113,13 +92,6 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
           <></>
           :
           <>
-            {/* <li className="grey lighten-3">
-                <AddIngredientForm
-                  ingredient={ingredient}
-                  handleChange={handleFormChange}
-                  handleSubmit={handleFormSubmit}
-                />
-            </li> */}
             <li className="white">
               <button
                 className="btn orange lighten-2 black-text center"
@@ -164,12 +136,22 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
                           {...prov.draggableProps}
                           {...prov.dragHandleProps}
                           ref={prov.innerRef}
-                          // onClick={toggleItemCrossed}
+                          onClick={() => toggleItemCrossedOuter(idx1, idx)}
                           >
 
                           <span
-                            style={i.crossedOff? {textDecoration: "line-through", color: "lightgrey"} : {textDecoration: "none"}}
-                            onClick={(e) => toggleItemCrossed(e, idx)}
+                            style={i.crossedOff?
+                              {
+                                cursor: (storeMode? "default" : "inherit"),
+                                textDecoration: "line-through",
+                                color: "lightgrey"
+                              }
+                              :
+                              {
+                                cursor: (storeMode? "default" : "inherit"),
+                                textDecoration: "none"
+                              }
+                            }
                           >
                             {i.name}
                           </span>
@@ -177,13 +159,13 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
                           {storeMode?
                             <></>
                             : 
-                            <button
-                              className="btn red darken-2 right"
-                              style={{marginTop: "-5px"}}
-                              onClick={() => removeIngredient(sublist.id, idx1, i.name, idx, i)}
+                            <span
+                              className="red-text text-darken-2 right"
+                              style={{cursor: "default"}}
+                              onClick={() => removeIngredient(sublist.id, idx1, i.name, idx)}
                             >
                               <i className="material-icons">delete</i>
-                            </button>
+                            </span>
                           }
                         </li>
                         }
@@ -202,7 +184,7 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
                       <div className="col s2">
                         <button
                           className="btn waves-effect waves-light blue accent-2"
-                          onClick={() => addToSubList(sublist, idx1)}
+                          onClick={() => addIngredient(sublist, idx1)}
                           style={{marginTop: "5px"}}
                         >
                           <i className="material-icons">add_circle_outline</i>
