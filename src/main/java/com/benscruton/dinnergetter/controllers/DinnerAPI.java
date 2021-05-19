@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -164,6 +165,11 @@ public class DinnerAPI {
     @DeleteMapping("lists/{sId}/delete")
     public void deleteSubList(@PathVariable("sId") Long sId){
         this.serv.deleteSubList(sId);
+    }
+
+    @PutMapping("users/{uEmail}/updatesublists")
+    public void updateSubLists(@PathVariable("uEmail") String uEmail, @RequestBody String[] idsAndNames){
+        this.serv.updateSubListNames(idsAndNames);
     }
 
 

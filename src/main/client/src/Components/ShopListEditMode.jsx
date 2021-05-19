@@ -8,6 +8,7 @@ import axios from "axios";
 const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) => {
 
   const {curUser, setUser} = useContext(MyContext);
+  const [editingCategory, setEditingCategory] = useState(-1);
 
   //======================================================================
   // ADD / REMOVE INGREDIENT FORM FUNCTIONALITY
@@ -51,25 +52,37 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
   //======================================================================
   // STORE MODE: CROSS OFF INGREDIENT
   //======================================================================
-  // const toggleItemCrossed = (e, idx) => {
-  //   if(storeMode){
-
-  //     let shoppingList = [...curUser.shoppingList];
-
-  //     shoppingList[idx].crossedOff = !shoppingList[idx].crossedOff;
-
-
-  //     setUser({...curUser, shoppingList});
-  //   }
-  // }
-
-  const toggleItemCrossedOuter = (slIdx, ingIdx) => {
+  const toggleItemCrossed = (slIdx, ingIdx) => {
     if(storeMode){
       let shoppingList = [...curUser.shoppingList];
       shoppingList[slIdx].ingredients[ingIdx].crossedOff = !shoppingList[slIdx].ingredients[ingIdx].crossedOff;
       setUser({...curUser, shoppingList});
     }
   };
+
+  //======================================================================
+  // CATEGORY NAME EDITING
+  //======================================================================
+  const categoryEditButton = catId => {
+    if(editingCategory !== catId){
+      setEditingCategory(catId);
+      return;
+    }
+    setEditingCategory(-1);
+    let idsAndNames = [];
+    for(let i=0; i<curUser.shoppingList.length; i++){
+      idsAndNames.push(curUser.shoppingList[i].id);
+      idsAndNames.push(curUser.shoppingList[i].category);
+    }
+    axios.put(`http://localhost:8080/api/users/${curUser.email}/updatesublists`, idsAndNames)
+      .catch(err => console.log(err));
+  }
+
+  const handleCategoryNameChange = (e, idx) => {
+    let shoppingList = [...curUser.shoppingList];
+    shoppingList[idx].category = e.target.value;
+    setUser({...curUser, shoppingList});
+  }
 
   return (
     <>
@@ -119,7 +132,40 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
               <ul className="collection" style={{marginTop: "0px", marginBottom:"0px", backgroundImage: `url(${GWTH})`}} {...provided.droppableProps} ref={provided.innerRef} >
                 <li className="collection-item blue-grey darken-1"></li>
                 <li className="collection-item center-align blue-grey-text text-darken-1 white">
-                  {sublist.category.toUpperCase()}
+                  
+                  {
+                    editingCategory === sublist.id ? 
+                      <>
+                        <i
+                          className="material-icons left red-text text-darken-2"
+                          style={{cursor: "pointer"}}
+                          onClick={() => console.log(idx1)}
+                        >
+                          delete
+                        </i>
+                        <div className="input-field inline" style={{margin: "0", padding: "0"}}>
+                          <input
+                            value={sublist.category}
+                            style={{margin: "-10px 0 0", padding: "0"}}
+                            onChange={e => handleCategoryNameChange(e, idx1)}
+                          />
+                        </div>
+                      </>
+                      :
+                      sublist.category.toUpperCase()
+
+                  }
+                  {storeMode?
+                    <></>
+                    :
+                    <i
+                      className="material-icons right"
+                      style={{cursor: "pointer"}}
+                      onClick={() => categoryEditButton(sublist.id)}
+                    >
+                      {editingCategory === sublist.id? "done" : "edit"}
+                    </i>
+                  }
                 </li>
                 {
                   sublist.ingredients.map( (i, idx) => 
@@ -136,7 +182,7 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
                           {...prov.draggableProps}
                           {...prov.dragHandleProps}
                           ref={prov.innerRef}
-                          onClick={() => toggleItemCrossedOuter(idx1, idx)}
+                          onClick={() => toggleItemCrossed(idx1, idx)}
                           >
 
                           <span
@@ -179,21 +225,21 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
                 {storeMode ?
                   <></>
                   :
-                  <li className="collection-item left-align blue-grey-text text-darken-1"  style={{margin: "0", padding: "0"}}>
-                    <div className="file-input input-field row" style={{margin: "0", padding: "0"}}>
-                      <div className="col s2">
-                        <button
-                          className="btn waves-effect waves-light blue accent-2"
-                          onClick={() => addIngredient(sublist, idx1)}
-                          style={{marginTop: "5px"}}
-                        >
-                          <i className="material-icons">add_circle_outline</i>
-                        </button>
-                      </div>
+                  <li className="collection-item left-align blue-grey-text text-darken-1 row" style={{margin: "0", padding: "0"}}>
+                    <div className="input-field white left-align col s10" style={{margin: "0", padding: "0"}}>
+                      <i
+                        className="material-icons prefix cyan-text text-lighten-2"
+                        onClick={() => addIngredient(sublist, idx1)}
+                        style={{marginTop: "5px", cursor: "pointer"}}
+                      >
+                        add_circle
+                      </i>
+
                       <input
+                        type="text"
+                        className="left-align"
                         value={sublist.formInput}
                         onChange={(e) => handleFormChange(e, idx1)}
-                        className="left-align col s8 offset-s1"
                       />
                     </div>
                   </li>
