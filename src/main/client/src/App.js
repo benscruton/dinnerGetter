@@ -20,8 +20,6 @@ function App() {
 
   const [ recipe, setRecipe ] = useState({ name: ""});
 
-  // const [userEmail, setUserEmail] = useState(user?.email);
-
   const [ curUser, setUser ] = useState({
     firstName: "",
     lastName: "",
@@ -33,29 +31,22 @@ function App() {
   });
 
   const [ recipes, setRecipes ] = useState([]);
-  // const [ pantry, setPantry] = useState(false);
-  // const [ shoppingList, setShoppingList] = useState(false);
   const [ addedRecipes, setAddedRecipes] = useState(false);
-  // const [ ingredient, setIngredient] = useState({name: ""});
   const [ allRecipes, setAllRecipes ] = useState([]);
   const [ hasBeenPopulated, setHasBeenPopulated ] = useState(false);
-  const [ userIngredientList, setUserIngredientList] = useState("");
   const [ redirectLocation, setRedirectLocation] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
   return (
     <div className="grey lighten-3">
       <MyContext.Provider value = {{ recipe, setRecipe, curUser, setUser,
-        // pantry, setPantry, shoppingList, setShoppingList, ingredient, setIngredient, userIngredientList, setUserIngredientList
         allRecipes, setAllRecipes, addedRecipes, setAddedRecipes, recipes, setRecipes, hasBeenPopulated, setHasBeenPopulated, redirectLocation, setRedirectLocation, searchResults, setSearchResults }}>
         <Nav />
         <MobileNav />
         {isAuthenticated? 
           <Router>
-            {/* some router react/reach */}
             <LandingPad path="/" />
             <Home path="/dashboard" />
-            {/* <NewRecipeForm path="/recipes/new" /> */}
             <RecipePage path="/recipes" />
             <ShoppingPage path="/shopping" />
           </Router>

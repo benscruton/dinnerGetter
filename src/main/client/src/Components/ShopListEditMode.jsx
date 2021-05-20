@@ -62,8 +62,33 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
   };
 
   //======================================================================
-  // CATEGORY NAME EDITING
+  // CATEGORY ADD / DELETE / EDIT
   //======================================================================
+  const addNewCategory = () => {
+    let shoppingList = [...curUser.shoppingList];
+    let newCategory = {
+      category: "(New Category)",
+      formInput: "",
+      ingredients: [],
+    };
+    axios.post(`http://localhost:8080/api/users/${curUser.email}/addsublist`, newCategory)
+      .then(rsp => {
+        newCategory.id = rsp.data.id;
+        shoppingList.push(newCategory);
+        setUser({...curUser, shoppingList});
+        setEditingCategory(rsp.data.id);
+      }).catch(err => console.log(err));
+  };
+  
+  const deleteCategory = (slId, idx) => {
+    let shoppingList = [...curUser.shoppingList];
+    shoppingList.splice(idx, 1);
+    setUser({...curUser, shoppingList});
+    axios.delete(`http://localhost:8080/api/lists/${slId}/delete`)
+      .catch(err => console.log(err));
+    setShowDeleteMessage(false);
+  };
+
   const categoryEditButton = catId => {
     setShowDeleteMessage(false);
     if(editingCategory !== catId){
@@ -86,14 +111,6 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
     setUser({...curUser, shoppingList});
   };
 
-  const deleteCategory = (slId, idx) => {
-    let shoppingList = [...curUser.shoppingList];
-    shoppingList.splice(idx, 1);
-    setUser({...curUser, shoppingList});
-    axios.delete(`http://localhost:8080/api/lists/${slId}/delete`)
-      .catch(err => console.log(err));
-    
-  };
 
   return (
     <>
@@ -138,7 +155,7 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
         {curUser.shoppingList?
           curUser.shoppingList.map( (sublist, idx1) =>
 
-          <Droppable key={idx1} droppableId={sublist.category}>
+          <Droppable key={idx1} droppableId={sublist.category.length ? sublist.category : `i${idx1}`}>
             { provided => (
               <ul className="collection" style={{marginTop: "0px", marginBottom:"0px", backgroundImage: `url(${GWTH})`}} {...provided.droppableProps} ref={provided.innerRef} >
                 <li className="collection-item blue-grey darken-1"></li>
@@ -161,6 +178,7 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
                             value={sublist.category}
                             style={{margin: "-10px 0 0", padding: "0"}}
                             onChange={e => handleCategoryNameChange(e, idx1)}
+                            autoFocus={true}
                           />
                         </div>
                       </>
@@ -189,7 +207,7 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
                     <br />
 
                     <button
-                      className="btn waves-effect waves-dark yellow darken-2 black-text"
+                      className="btn waves-effect waves-dark orange lighten-2 black-text"
                       style={{margin: "5px"}}
                       onClick={() => setShowDeleteMessage(false)}
                     >
@@ -306,6 +324,17 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
         }
 
       </DragDropContext>
+
+      <br />
+      
+      {storeMode? <></> :
+        <button
+          className="left btn-floating btn-large halfway-fab waves-effect waves-light orange lighten-2 black-text"
+          onClick={addNewCategory}
+        >
+          <i className="material-icons black-text">playlist_add</i>
+        </button>
+      }
     </>
   );
 
