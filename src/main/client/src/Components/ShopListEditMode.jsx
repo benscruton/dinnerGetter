@@ -10,6 +10,7 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
   const {curUser, setUser} = useContext(MyContext);
   const [editingCategory, setEditingCategory] = useState(-1);
   const [showDeleteMessage, setShowDeleteMessage] = useState(false);
+  const [categoryInput, setCategoryInput] = useState("");
 
   //======================================================================
   // ADD / REMOVE INGREDIENT FORM FUNCTIONALITY
@@ -67,7 +68,7 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
   const addNewCategory = () => {
     let shoppingList = [...curUser.shoppingList];
     let newCategory = {
-      category: "(New Category)",
+      category: `Category ${shoppingList.length + 1}`,
       formInput: "",
       ingredients: [],
     };
@@ -87,28 +88,30 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
     axios.delete(`http://localhost:8080/api/lists/${slId}/delete`)
       .catch(err => console.log(err));
     setShowDeleteMessage(false);
+    setCategoryInput("");
   };
 
-  const categoryEditButton = catId => {
+  const categoryEditButton = (sl, idx) => {
     setShowDeleteMessage(false);
-    if(editingCategory !== catId){
-      setEditingCategory(catId);
+    if(editingCategory !== sl.id){
+      setEditingCategory(sl.id);
+      setCategoryInput(sl.category);
       return;
     }
+    // console.log(categoryInput);
     setEditingCategory(-1);
-    let idsAndNames = [];
-    for(let i=0; i<curUser.shoppingList.length; i++){
-      idsAndNames.push(curUser.shoppingList[i].id);
-      idsAndNames.push(curUser.shoppingList[i].category);
+    if(categoryInput.length){
+      let shoppingList = [...curUser.shoppingList];
+      shoppingList[idx].category = categoryInput;
+      setUser({...curUser, shoppingList});
+      axios.put(`http://localhost:8080/api/users/${curUser.email}/updatesublists`, [sl.id, categoryInput])
+        .then( () => setCategoryInput(""))
+        .catch(err => console.log(err));
     }
-    axios.put(`http://localhost:8080/api/users/${curUser.email}/updatesublists`, idsAndNames)
-      .catch(err => console.log(err));
   };
 
-  const handleCategoryNameChange = (e, idx) => {
-    let shoppingList = [...curUser.shoppingList];
-    shoppingList[idx].category = e.target.value;
-    setUser({...curUser, shoppingList});
+  const handleCategoryNameChange = e => {
+    setCategoryInput(e.target.value);
   };
 
 
@@ -175,9 +178,9 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
                         }
                         <div className="input-field inline" style={{margin: "0", padding: "0"}}>
                           <input
-                            value={sublist.category}
+                            value={categoryInput}
                             style={{margin: "-10px 0 0", padding: "0"}}
-                            onChange={e => handleCategoryNameChange(e, idx1)}
+                            onChange={handleCategoryNameChange}
                             autoFocus={true}
                           />
                         </div>
@@ -192,7 +195,7 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
                     <i
                       className="material-icons right"
                       style={{cursor: "pointer"}}
-                      onClick={() => categoryEditButton(sublist.id)}
+                      onClick={() => categoryEditButton(sublist, idx1)}
                     >
                       {editingCategory === sublist.id? "done" : "edit"}
                     </i>

@@ -152,13 +152,10 @@ public class AppService {
         this.sRepo.deleteById(sId);
     }
 
-    public void updateSubListNames(String[] idsAndNames){
-        for(int i=0; i<idsAndNames.length; i+=2){
-            Long sId = Long.parseLong(idsAndNames[i]);
-            SubList sl = this.findSubListById(sId);
-            sl.setCategory(idsAndNames[i+1]);
-            this.sRepo.save(sl);
-        }
+    public void updateSubListName(String[] idAndName){
+        SubList sl = this.findSubListById(Long.parseLong(idAndName[0]));
+        sl.setCategory(idAndName[1]);
+        this.sRepo.save(sl);
     }
 
 

@@ -168,8 +168,8 @@ public class DinnerAPI {
     }
 
     @PutMapping("users/{uEmail}/updatesublists")
-    public void updateSubLists(@PathVariable("uEmail") String uEmail, @RequestBody String[] idsAndNames){
-        this.serv.updateSubListNames(idsAndNames);
+    public void updateSubList(@PathVariable("uEmail") String uEmail, @RequestBody String[] idAndName){
+        this.serv.updateSubListName(idAndName);
     }
 
 
