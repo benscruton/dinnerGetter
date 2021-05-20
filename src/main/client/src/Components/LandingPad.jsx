@@ -5,7 +5,7 @@ import React, { useContext } from "react";
 import MyContext from "../MyContext";
 
 const LandingPad = () => {
-    const { curUser, setUser, setPantry, setUserIngredientList, redirectLocation, setShoppingList, shoppingList} = useContext(MyContext);
+    const { curUser, setUser, redirectLocation} = useContext(MyContext);
     const { user, isAuthenticated } = useAuth0();
 
     //======================================================================
@@ -61,7 +61,6 @@ const LandingPad = () => {
                     };
                     shoppingList.push(sublist);
                 }
-                console.log(catList);
 
 
             

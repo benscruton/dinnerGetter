@@ -46,8 +46,8 @@ function App() {
   return (
     <div className="grey lighten-3">
       <MyContext.Provider value = {{ recipe, setRecipe, curUser, setUser,
-        // pantry, setPantry, shoppingList, setShoppingList, ingredient, setIngredient,
-        allRecipes, setAllRecipes, addedRecipes, setAddedRecipes, recipes, setRecipes, hasBeenPopulated, setHasBeenPopulated,userIngredientList, setUserIngredientList, redirectLocation, setRedirectLocation, searchResults, setSearchResults }}>
+        // pantry, setPantry, shoppingList, setShoppingList, ingredient, setIngredient, userIngredientList, setUserIngredientList
+        allRecipes, setAllRecipes, addedRecipes, setAddedRecipes, recipes, setRecipes, hasBeenPopulated, setHasBeenPopulated, redirectLocation, setRedirectLocation, searchResults, setSearchResults }}>
         <Nav />
         <MobileNav />
         {isAuthenticated? 

@@ -9,6 +9,7 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
 
   const {curUser, setUser} = useContext(MyContext);
   const [editingCategory, setEditingCategory] = useState(-1);
+  const [showDeleteMessage, setShowDeleteMessage] = useState(false);
 
   //======================================================================
   // ADD / REMOVE INGREDIENT FORM FUNCTIONALITY
@@ -64,6 +65,7 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
   // CATEGORY NAME EDITING
   //======================================================================
   const categoryEditButton = catId => {
+    setShowDeleteMessage(false);
     if(editingCategory !== catId){
       setEditingCategory(catId);
       return;
@@ -76,13 +78,22 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
     }
     axios.put(`http://localhost:8080/api/users/${curUser.email}/updatesublists`, idsAndNames)
       .catch(err => console.log(err));
-  }
+  };
 
   const handleCategoryNameChange = (e, idx) => {
     let shoppingList = [...curUser.shoppingList];
     shoppingList[idx].category = e.target.value;
     setUser({...curUser, shoppingList});
-  }
+  };
+
+  const deleteCategory = (slId, idx) => {
+    let shoppingList = [...curUser.shoppingList];
+    shoppingList.splice(idx, 1);
+    setUser({...curUser, shoppingList});
+    axios.delete(`http://localhost:8080/api/lists/${slId}/delete`)
+      .catch(err => console.log(err));
+    
+  };
 
   return (
     <>
@@ -134,15 +145,17 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
                 <li className="collection-item center-align blue-grey-text text-darken-1 white">
                   
                   {
-                    editingCategory === sublist.id ? 
+                    editingCategory === sublist.id && !storeMode ? 
                       <>
-                        <i
-                          className="material-icons left red-text text-darken-2"
-                          style={{cursor: "pointer"}}
-                          onClick={() => console.log(idx1)}
-                        >
-                          delete
-                        </i>
+                        {showDeleteMessage? <></> :
+                          <i
+                            className="material-icons left red-text text-darken-2"
+                            style={{cursor: "pointer"}}
+                            onClick={() => setShowDeleteMessage(true)}
+                          >
+                            delete
+                          </i>
+                        }
                         <div className="input-field inline" style={{margin: "0", padding: "0"}}>
                           <input
                             value={sublist.category}
@@ -167,6 +180,45 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
                     </i>
                   }
                 </li>
+                
+                { showDeleteMessage && editingCategory === sublist.id ? 
+                  <li className="collection-item left-align blue-grey-text text-darken-2 center-align">
+                    Deleting this category will also remove all items listed under "{sublist.category}" from your list.  This cannot be undone.
+                    <br />
+                    Are you sure you wish to continue?
+                    <br />
+
+                    <button
+                      className="btn waves-effect waves-dark yellow darken-2 black-text"
+                      style={{margin: "5px"}}
+                      onClick={() => setShowDeleteMessage(false)}
+                    >
+                      <i className="material-icons left">undo</i>
+                      Cancel
+                    </button>
+                    {/* <i className="material-icons red-text text-darken-2">delete</i>
+                    <i className="material-icons yellow-text text-darken-2">cancel</i> */}
+
+                    <button
+                      className="btn waves-effect waves-light red darken-2"
+                      style={{margin: "5px"}}
+                      onClick={e => deleteCategory(sublist.id, idx1)}
+                    >
+                      <i className="material-icons left">delete</i>
+                      Delete
+                    </button>
+                    
+                    
+
+                  </li>
+                  :
+                  <></>
+                }
+
+
+
+
+
                 {
                   sublist.ingredients.map( (i, idx) => 
                     <Draggable 
