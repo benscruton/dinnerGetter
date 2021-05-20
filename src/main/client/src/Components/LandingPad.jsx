@@ -5,8 +5,8 @@ import React, { useContext } from "react";
 import MyContext from "../MyContext";
 
 const LandingPad = () => {
-    const { curUser, setUser, redirectLocation} = useContext(MyContext);
-    const { user, isAuthenticated } = useAuth0();
+    const { setUser, redirectLocation} = useContext(MyContext);
+    const { user, isAuthenticated} = useAuth0();
 
     //======================================================================
     // checks if user is authenticated. if they are then it checks and/or adds user to the local database

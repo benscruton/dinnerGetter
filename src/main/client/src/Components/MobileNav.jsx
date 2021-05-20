@@ -1,4 +1,4 @@
-import { Link, navigate } from "@reach/router";
+import { Link } from "@reach/router";
 import axios from "axios";
 import { useContext, useEffect } from "react";
 import MyContext from "../MyContext";
@@ -12,8 +12,15 @@ const MobileNav = () =>{
     useEffect( () => {
         M.AutoInit();
     }, []);
-    const { user, isAuthenticated, isLoading } = useAuth0();
-    const { recipe, setRecipe, searchResults, setSearchResults, curUser, setRedirectLocation} = useContext(MyContext);
+    
+    const { user, isAuthenticated } = useAuth0();
+    const {
+        recipe,
+        setRecipe,
+        searchResults,
+        setSearchResults,
+        // setRedirectLocation
+    } = useContext(MyContext);
 
     const searchHandler = (e) =>{
         setRecipe( {name: e.target.value});
@@ -26,30 +33,32 @@ const MobileNav = () =>{
     }
     // console.log(searchResults);
 
-    const navigateThroughLandingPad = e => {
-        e.preventDefault();
-        setRedirectLocation(e.target.pathname);
-        navigate("/");
-    }
+    // const navigateThroughLandingPad = e => {
+    //     e.preventDefault();
+    //     setRedirectLocation(e.target.pathname);
+    //     navigate("/");
+    // }
 
     return( 
         <>
-            <ul className="sidenav row" id="mob-menu">
-                {isAuthenticated?<li>
-                    <h5>{user.name}</h5>
-                </li>:<li><LoginButton /></li>}
+            <ul className="sidenav" id="mob-menu">
+                {isAuthenticated?
+                    <li><h5>{user.name}</h5></li>
+                    :
+                    <li><LoginButton /></li>
+                }
 
                 <li>
-                    <Link to="/dashboard" className="text-decoration-none  text-white" onClick={navigateThroughLandingPad}>Home</Link>
+                    <Link to="/dashboard">Home</Link>
                 </li>
                 <li>
-                    <Link to="/recipes" className="text-decoration-none text-white" onClick={navigateThroughLandingPad}>My Recipes</Link>
+                    <Link to="/recipes">My Recipes</Link>
                 </li>
                 <li>
-                    <Link to="/shopping" className="text-decoration-none text-white" onClick={navigateThroughLandingPad}>Shopping</Link>
+                    <Link to="/shopping">Shopping</Link>
                 </li>
                 {isAuthenticated?
-                    <li className="col s12">
+                    <li>
                         <LogoutButton />
                     </li>
                     :

@@ -1,25 +1,27 @@
-import { useAuth0 } from '@auth0/auth0-react';
+// import { useAuth0 } from '@auth0/auth0-react';
 import { navigate } from "@reach/router";
 import axios from 'axios';
-import { useContext, useEffect, useState } from "react";
-import LoginButton from "../Components/LoginButton";
-import LogoutButton from "../Components/LogoutButton";
+import { useContext, useEffect } from "react";
 import OnHand from "../Components/OnHand";
-import Profile from "../Components/Profile";
 import Recipes from "../Components/Recipes";
-import ShoppingList from "../Components/ShoppingList";
+// import ShoppingList from "../Components/ShoppingList";
 import MyContext from "../MyContext";
 import M from "materialize-css";
 
 
 const Home = props =>{
 
-    const { user, isAuthenticated, isLoading } = useAuth0();
-    const {curUser,pantry,setPantry,ingredient, setIngredient, setRedirectLocation, setUserIngredientList, userIngredientList, searchResults, setUser} = useContext(MyContext);
+    // const { user, isAuthenticated, isLoading } = useAuth0();
+    const {
+        curUser,
+        setRedirectLocation,
+        // searchResults,
+        setUser
+    } = useContext(MyContext);
 
     useEffect( ()=>{
         M.AutoInit();
-        if(curUser.email == ""){
+        if(curUser.email === ""){
             setRedirectLocation("/dashboard");
             navigate("/");
         } 
@@ -72,9 +74,9 @@ const Home = props =>{
         ingredient.dummyUserEmail = curUser.email;
         axios.post("http://localhost:8080/api/ingredients/removefrompantry", ingredient)
         .then(response => {
-            let tempPantry = [...pantry];
-            tempPantry.splice(tempPantry.indexOf(ingredient), 1);
-            setPantry(tempPantry);
+            let pantry = [...curUser.pantry];
+            pantry.splice(pantry.indexOf(ingredient), 1);
+            setUser({...curUser, pantry});
         }).catch( err => console.log(err));
     }
     //==================================================================================
@@ -103,10 +105,9 @@ const Home = props =>{
                 </div>
                 <div className="col m6 s12 row">
                     <OnHand
-                        pantry={pantry}
+                        pantry={curUser.pantry}
                         // handleChange={handleFormChange}
                         // handleSubmit={handleFormSubmit}
-                        ingredient={ingredient}
                         removeFromPantry={removeFromPantry}
                     />
                     {/* <ShoppingList editable={false} /> */}

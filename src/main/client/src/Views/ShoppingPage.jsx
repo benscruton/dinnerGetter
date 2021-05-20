@@ -1,28 +1,32 @@
 import { navigate } from '@reach/router';
-import { useAuth0 } from '@auth0/auth0-react';
+// import { useAuth0 } from '@auth0/auth0-react';
 // import axios from 'axios';
 import M from "materialize-css";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import ShoppingList from "../Components/ShoppingList";
 import MyContext from "../MyContext";
 
 const ShoppingPage = () => {
-    const { curUser, setUser, shoppingList, setShoppingList, setRedirectLocation, ingredient, setIngredient } = useContext(MyContext);
-    const { user } = useAuth0();
-    const [counter, setCounter] = useState(0);
+    const {
+        curUser,
+        // setUser,
+        setRedirectLocation
+        } = useContext(MyContext);
+    // const { user } = useAuth0();
+    // const [counter, setCounter] = useState(0);
 
 
     useEffect(() => {
         M.AutoInit();
-        if (curUser.email == "") {
+        if (curUser.email === "") {
             setRedirectLocation("/shopping");
             navigate("/");
         }
 
-        if (!curUser.shoppingList) {
-            setShoppingList([]);
-            return;
-        }
+        // if (!curUser.shoppingList) {
+        //     setShoppingList([]);
+        //     return;
+        // }
         //=======================================================
         // api post to make sure user exists  -- THIS SHOULD BE HANDLED IN THE LANDING PAD NOW      
         //=======================================================        

@@ -1,16 +1,13 @@
 import React, { useContext } from "react";
-import { useAuth0 } from '@auth0/auth0-react';
+// import { useAuth0 } from '@auth0/auth0-react';
 import MyContext from "../MyContext";
 import M from "materialize-css";
-import SaveRecipeBtn from "./SaveRecipeBtn";
+// import SaveRecipeBtn from "./SaveRecipeBtn";
 
 function RecipesAdded() {
-	// what does this do
-	// this initialized the materializ jqery nonsense built into it
-
 	M.AutoInit();
 
-	const { user, isAuthenticated, isLoading } = useAuth0();
+	// const { user, isAuthenticated, isLoading } = useAuth0();
 	const { addedRecipes } = useContext(MyContext);
 
 

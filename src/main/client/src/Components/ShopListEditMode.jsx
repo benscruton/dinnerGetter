@@ -1,7 +1,6 @@
 import React, {useContext, useState} from "react";
 import MyContext from "../MyContext";
 import GWTH from '../static/img/GWTH.jpg'
-import AddIngredientForm from "./AddIngredientForm";
 import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
 import axios from "axios";
 

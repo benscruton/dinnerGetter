@@ -1,5 +1,5 @@
-import React, {useState, useContext, useEffect} from "react";
-import { useAuth0 } from '@auth0/auth0-react';
+import React, {useContext, useEffect} from "react";
+// import { useAuth0 } from '@auth0/auth0-react';
 import { navigate} from "@reach/router";
 import NewRecipeForm from "../Components/NewRecipeForm";
 import RecipesAdded from "../Components/RecipesAdded";
@@ -10,22 +10,29 @@ import M from "materialize-css";
 
 const RecipePage = props =>{
     
-    const {curUser, setUser, setRedirectLocation, redirectLocation, addedRecipes, setAddedRecipes} = useContext(MyContext);
+    const {
+        curUser,
+        setUser,
+        setRedirectLocation,
+        // redirectLocation,
+        // addedRecipes,
+        setAddedRecipes
+    } = useContext(MyContext);
     
     useEffect( ()=>{
         M.AutoInit();
         if(curUser.email === ""){
-            // while(redirectLocation !== "/recipes") {
-                setRedirectLocation("/recipes");
-            // }
+            setRedirectLocation("/recipes");
             navigate("/");
         }
         if(!curUser.addedRecipes){
-            setAddedRecipes([]);
+            // setAddedRecipes([]);
             return;
         }
 
         // because of the way the relational database creates JSON objects, sometimes instead of getting an actual recipe we just get a recipe ID.  Which is not ideal for, you know, showing your recipe on the page
+
+        // this'll work here but we may eventually want to move it to the giant function in LandingPad -- just load everything all at once, and then we'll just have it when we need it instead of needing to load things on a per-page basis
         let adds = curUser.addedRecipes;
         for(let i=0; i<adds.length; i++){
             if(typeof adds[i] === "number"){
@@ -41,7 +48,7 @@ const RecipePage = props =>{
                     }).catch(err => console.log(err));
             }
         }
-        setAddedRecipes(curUser?.addedRecipes);
+        // setAddedRecipes(curUser?.addedRecipes);
     },[]);
 
     return(

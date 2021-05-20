@@ -15,7 +15,6 @@ const ShoppingList = ({editable}) => {
   // LIST EDITING, INCLUDING DRAG-AND-DROP FUNCTIONALITY
   //======================================================================
   const handleDrop = move => {
-    console.log("hello");
     console.log(move);
     if(!move.destination) return;
 

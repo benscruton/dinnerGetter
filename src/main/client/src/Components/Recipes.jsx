@@ -9,20 +9,20 @@ function Recipes() {
 
   const [ instructions, setInstructions] = useState([]);
   const RECIPES = require("../static/recipelist");
-  const { allRecipes, hasBeenPopulated, setIngredient, ingredient, curUser, shoppingList, setShoppingList, setUser} = useContext(MyContext);
+  const {
+    // allRecipes,
+    // hasBeenPopulated,
+    curUser,
+    setUser} = useContext(MyContext);
   
   useEffect( () => {
     M.AutoInit();
   }, []);
 
   const addIngredientToList = (e, name) => {
-    console.log(name);
     let ingredient = {name};
-    // i.dummyUserEmail = curUser.email;
-    
     axios.post(`http://localhost:8080/api/users/${curUser.email}/addtoshoppinglist`, ingredient)
     .then(response => {
-      // console.log(response.data);
       if(response.data){
         let shoppingList = [...curUser.shoppingList];
         ingredient.crossedOff = false;
@@ -107,7 +107,9 @@ function Recipes() {
                                 <div className="col s10 left-align">{ing.name}</div>
                                 <div className="col s2">
                                   {!curUser.shoppingList.map(x => (x.name? x.name : x)).includes(ing.name) ? 
-                                    <button className="btn waves-effect waves-light blue accent-2" onClick={e => addIngredientToList(e, (ing.name? ing.name : ing))}>
+                                    <button
+                                      className="btn waves-effect waves-light blue accent-2"
+                                      onClick={() => addIngredientToList(ing.name? ing.name : ing)}>
                                       <i className="material-icons">add_circle_outline</i>
                                     </button>
                                     :
