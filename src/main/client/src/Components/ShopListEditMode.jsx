@@ -97,7 +97,6 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
       setCategoryInput(sl.category);
       return;
     }
-    // console.log(categoryInput);
     setEditingCategory(-1);
     if(categoryInput.length){
       let shoppingList = [...curUser.shoppingList];
@@ -138,7 +137,7 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
             <li className="white">
               <button
                 className="btn orange lighten-2 black-text center"
-                style={{marginTop: "-10px", marginBottom: "5px"}}
+                style={{margin:"5px 0"}}
                 onClick={saveListOrder}
               >
                 <i className="material-icons right">save</i>
@@ -211,7 +210,10 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
                     <button
                       className="btn waves-effect waves-dark orange lighten-2 black-text"
                       style={{margin: "5px"}}
-                      onClick={() => setShowDeleteMessage(false)}
+                      onClick={() => {
+                        setShowDeleteMessage(false);
+                        setEditingCategory(-1);
+                      }}
                     >
                       <i className="material-icons left">undo</i>
                       Cancel
@@ -242,8 +244,8 @@ const ShopListEditMode = ({handleDrop, storeMode, switchMode, saveListOrder}) =>
                 {
                   sublist.ingredients.map( (i, idx) => 
                     <Draggable 
-                      key={idx}
-                      draggableId={`${i.name}-${idx}`}
+                      key={i.name}
+                      draggableId={i.name}
                       index={idx}
                       isDragDisabled={storeMode}
                     >

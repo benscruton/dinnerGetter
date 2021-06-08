@@ -15,55 +15,25 @@ const ShoppingList = ({editable}) => {
   // LIST EDITING, INCLUDING DRAG-AND-DROP FUNCTIONALITY
   //======================================================================
   const handleDrop = move => {
-    console.log(move);
     if(!move.destination) return;
 
-    if(move.destination.droppableId === move.source.droppableId){
-      // moving within same list
-      let fullList = [...curUser.shoppingList];
-      let catnames = fullList.map(sublist => sublist.category);
-      let listIdx = catnames.indexOf(move.destination.droppableId);
+    let fullList = [...curUser.shoppingList];
+    let catnames = fullList.map(sublist => sublist.category);
+    let srcIdx = catnames.indexOf(move.source.droppableId);
+    let destIdx = catnames.indexOf(move.destination.droppableId);
 
-      let adjList = [...fullList[listIdx].ingredients];
+    let adjSrcList = [...fullList[srcIdx].ingredients];
+    const [movedItem] = adjSrcList.splice(move.source.index, 1);
 
-      const [movedItem] = adjList.splice(move.source.index, 1);
-      adjList.splice(move.destination.index, 0, movedItem);
+    let adjDestList = (srcIdx === destIdx) ? adjSrcList : [...fullList[destIdx].ingredients];
+    adjDestList.splice(move.destination.index, 0, movedItem);
 
-      fullList[listIdx].ingredients = adjList;
+    fullList[srcIdx].ingredients = adjSrcList;
+    fullList[destIdx].ingredients = adjDestList;
 
-      setUser({...curUser,
-        shoppingList: fullList
-      });
-      return;
-    }
-
-
-    else{
-      // moving between lists
-      let fullList = [...curUser.shoppingList];
-      let catnames = fullList.map(sublist => sublist.category);
-      let srcIdx = catnames.indexOf(move.source.droppableId);
-      let destIdx = catnames.indexOf(move.destination.droppableId);
-
-      let adjSrcList = [...fullList[srcIdx].ingredients];
-      let adjDestList = [...fullList[destIdx].ingredients];
-
-      const [movedItem] = adjSrcList.splice(move.source.index, 1);
-      adjDestList.splice(move.destination.index, 0, movedItem);
-
-      fullList[srcIdx].ingredients = adjSrcList;
-      fullList[destIdx].ingredients = adjDestList;
-
-      setUser({...curUser,
-        shoppingList: fullList
-      });
-      return;
-    }
-
-
-
-
-
+    setUser({...curUser,
+      shoppingList: fullList
+    });
   }
 
   const switchMode = () => {
@@ -71,12 +41,22 @@ const ShoppingList = ({editable}) => {
   }
 
   const saveListOrder = () => {
-    let listOrder = [...curUser.shoppingList];
-    let names = listOrder.map(x => x.name);
-    axios.post(`http://localhost:8080/api/users/${curUser.email}/savelistorder`, names)
-      .then(response => {
-        console.log(response);
-      }).catch(err => console.log(err));
+    // let listOrder = [...curUser.shoppingList];
+    // let names = listOrder.map(x => x.name);
+    // axios.post(`http://localhost:8080/api/users/${curUser.email}/savelistorder`, names)
+    //   .then(response => {
+    //     console.log(response);
+    //   }).catch(err => console.log(err));
+    let lists = [];
+    for(let i=0; i<curUser.shoppingList.length; i++){
+      let list = ["" + curUser.shoppingList[i].id];
+      list.push(...curUser.shoppingList[i].ingredients.map(ing => ing.name));
+      // add.push(...contents);
+      lists.push(list);
+    }
+    axios.post(`http://localhost:8080/api/users/${curUser.email}/savelistorder`, lists)
+      .then(rsp => console.log(rsp))
+      .catch(err => console.log(err));
   }
 
 

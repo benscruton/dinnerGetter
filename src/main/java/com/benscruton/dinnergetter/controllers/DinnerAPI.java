@@ -267,10 +267,10 @@ public class DinnerAPI {
     //======================================================================
     // removes ingredient from shopping list
     //======================================================================
-    // @PostMapping("users/{uEmail}/savelistorder")
-    // public void saveListOrder(@PathVariable("uEmail") String uEmail, @RequestBody String[] ingredientNames){
-    //     this.serv.saveListOrder(uEmail, ingredientNames);
-    // }
+    @PostMapping("users/{uEmail}/savelistorder")
+    public void saveListOrder(@PathVariable("uEmail") String uEmail, @RequestBody String[][] sublists){
+        this.serv.saveListOrder(uEmail, sublists);
+    }
 
 
 
