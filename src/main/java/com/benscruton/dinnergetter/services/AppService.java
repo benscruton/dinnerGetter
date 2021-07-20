@@ -243,18 +243,7 @@ public class AppService {
     //==================================================
     // update the order of user's list in database
     //==================================================
-    public void saveListOrder(String uEmail, String[][] sublists){
-        // User u = this.findUserByEmail(uEmail);
-        // List<Ingredient> ordered = new ArrayList<Ingredient>();
-        // for(String i : ingredients){
-        //     Ingredient nextIngredient = this.findIngredientByName(i);
-        //     ordered.add(nextIngredient);
-        // }
-        // u.setShoppingList(ordered);
-        // this.uRepo.save(u);
-
-
-        // User u = this.findUserByEmail(uEmail);
+    public void saveListOrder(String[][] sublists){
         for(String[] array : sublists){
             Long sId = Long.parseLong(array[0]);
             SubList sl = this.findSubListById(sId);

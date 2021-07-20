@@ -269,7 +269,7 @@ public class DinnerAPI {
     //======================================================================
     @PostMapping("users/{uEmail}/savelistorder")
     public void saveListOrder(@PathVariable("uEmail") String uEmail, @RequestBody String[][] sublists){
-        this.serv.saveListOrder(uEmail, sublists);
+        this.serv.saveListOrder(sublists);
     }
 
 

@@ -42,7 +42,7 @@ const Nav = (props) => {
     <div className="navbar-fixed">
       <nav>
         <div className="nav-wrapper grey darken-3">
-          <span className="brand-logo center">Dinner Picker</span>
+          <span className="brand-logo center">Dinner Getter</span>
           <a href="#!" data-target="mob-menu" className="sidenav-trigger">
             <i className="material-icons">menu</i>
           </a>
